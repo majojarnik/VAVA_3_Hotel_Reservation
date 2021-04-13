@@ -22,6 +22,18 @@ public class Reservation implements ITableModel{
     private double price;
     private Customer customer;
     private boolean accomodation;
+    private List<Service> services = new ArrayList<Service>();
+    private double priceAll;
+    private Payment payment = null;
+    
+    
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
 
     public Reservation(Date from, Date to, Room room, double price, Customer customer, boolean accomodation) {
         this.from = from;
@@ -30,6 +42,7 @@ public class Reservation implements ITableModel{
         this.price = price;
         this.customer = customer;
         this.accomodation = accomodation;
+        priceAll = price;
     }
 
     public Reservation(Date from, Date to, Room room, double price) {
@@ -37,6 +50,7 @@ public class Reservation implements ITableModel{
         this.to = to;
         this.room = room;
         this.price = price;
+        priceAll = price;
     }
 
     public double getPrice() {
@@ -111,6 +125,22 @@ public class Reservation implements ITableModel{
         columns.add("Cena");
         
         return columns;
+    }
+
+    public double getPriceAll() {
+        return priceAll;
+    }
+
+    public void setPriceAll(double priceAll) {
+        this.priceAll = priceAll;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
     
     

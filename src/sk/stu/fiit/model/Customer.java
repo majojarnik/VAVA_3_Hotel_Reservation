@@ -15,7 +15,6 @@ import java.util.List;
 public class Customer implements ITableModel{
     private String firstName;
     private String lastName;
-    private List<Service> services = new ArrayList<Service>();
     private List<Reservation> reservations = new ArrayList<Reservation>();
     
     public Customer(String firstName, String lastName) {
@@ -64,13 +63,7 @@ public class Customer implements ITableModel{
         this.reservations = reservations;
     }
 
-    public List<Service> getServices() {
-        return services;
-    }
 
-    public void setServices(List<Service> services) {
-        this.services = services;
-    }
     
     
     

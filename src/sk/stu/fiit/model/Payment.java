@@ -6,7 +6,6 @@
 package sk.stu.fiit.model;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  *
@@ -15,12 +14,10 @@ import java.util.List;
 public class Payment{
     private boolean cash;
     private Date date;
-    private List<IService> listServices;
 
-    public Payment(boolean cash, Date date, List<IService> listServices) {
+    public Payment(boolean cash, Date date) {
         this.cash = cash;
         this.date = date;
-        this.listServices = listServices;
     }
 
     public boolean isCash() {
@@ -39,12 +36,4 @@ public class Payment{
         this.date = date;
     }
 
-    public List<IService> getListServices() {
-        return listServices;
-    }
-
-    public void setListServices(List<IService> listServices) {
-        this.listServices = listServices;
-    }
-    
 }

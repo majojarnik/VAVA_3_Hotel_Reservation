@@ -16,10 +16,12 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import sk.stu.fiit.controller.CustomerController;
+import sk.stu.fiit.controller.ReservationController;
 import sk.stu.fiit.data.Data;
 import sk.stu.fiit.model.Category;
 import sk.stu.fiit.model.Customer;
 import sk.stu.fiit.model.ITableModel;
+import sk.stu.fiit.model.Reservation;
 import sk.stu.fiit.model.Room;
 
 /**
@@ -94,9 +96,10 @@ public class MainWindow extends javax.swing.JFrame {
         tblAccoms = new javax.swing.JTable();
         ckbFinished = new javax.swing.JCheckBox();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cmbRooms = new javax.swing.JComboBox<>();
         btnAccomInAccomRes = new javax.swing.JButton();
         btnAccomInAccomNoRes = new javax.swing.JButton();
+        btnFilter = new javax.swing.JButton();
         pnlRooms = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblRooms = new javax.swing.JTable();
@@ -187,39 +190,47 @@ public class MainWindow extends javax.swing.JFrame {
         pnlReservations.add(btnAddRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, -1, -1));
 
         btnCancelReservation.setText("Zrušiť rezerváciu");
+        btnCancelReservation.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnCancelReservationMouseReleased(evt);
+            }
+        });
         pnlReservations.add(btnCancelReservation, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 220, -1, -1));
 
         btnAccomCustomerRes.setText("Ubytovať zákazníka");
+        btnAccomCustomerRes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnAccomCustomerResMouseReleased(evt);
+            }
+        });
         pnlReservations.add(btnAccomCustomerRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, -1, -1));
 
         tpnlMain.addTab("Rezervácie", pnlReservations);
 
         pnlAccom.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblAccoms.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        tblAccoms.setModel(initAccomTable(0, false)
+        );
         jScrollPane5.setViewportView(tblAccoms);
 
         pnlAccom.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 460, 100));
 
         ckbFinished.setText("Len ukončené a nezaplatené");
-        pnlAccom.add(ckbFinished, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, -1, -1));
+        pnlAccom.add(ckbFinished, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel4.setText("Izba:");
         pnlAccom.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 30));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        pnlAccom.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 100, 30));
+        List<String> namesRooms = new ArrayList<String>();
+        namesRooms.add("Všetky");
+        for (Room room: Data.getAllRooms()){
+            namesRooms.add(room.getId());
+        }
+
+        String[] arrayRooms = namesRooms.toArray(new String[0]);
+        cmbRooms.setModel(new javax.swing.DefaultComboBoxModel<>(arrayRooms));
+        pnlAccom.add(cmbRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 100, 30));
 
         btnAccomInAccomRes.setText("Ubytovať s rezerváciou");
         btnAccomInAccomRes.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -236,6 +247,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
         pnlAccom.add(btnAccomInAccomNoRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 220, -1, -1));
+
+        btnFilter.setText("Filtrovať");
+        btnFilter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnFilterMouseReleased(evt);
+            }
+        });
+        pnlAccom.add(btnFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, -1, -1));
 
         tpnlMain.addTab("Ubytovania", pnlAccom);
 
@@ -295,7 +314,7 @@ public class MainWindow extends javax.swing.JFrame {
                 btnAddServiceMouseReleased(evt);
             }
         });
-        pnlServices.add(btnAddService, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+        pnlServices.add(btnAddService, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, -1, -1));
 
         btnCus_Ser.setText("Pridať službu k zákazníkovi");
         btnCus_Ser.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,20 +322,21 @@ public class MainWindow extends javax.swing.JFrame {
                 btnCus_SerMouseReleased(evt);
             }
         });
-        pnlServices.add(btnCus_Ser, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 210, -1, -1));
+        pnlServices.add(btnCus_Ser, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
 
         List<String> names = new ArrayList<String>();
-        for (Customer cus: Data.getAllCustomers()){
-            names.add(cus.getFirstName() + " " +  cus.getLastName());
+        for (Reservation res: Data.getAllReservations()){
+            if (res.getFrom().after(dateNow) && dateNow.after(res.getTo()))
+            names.add(res.getCustomer().getFirstName() + " " +  res.getCustomer().getLastName() + " - " + res.getRoom().getId());
         }
 
         String[] array = names.toArray(new String[0]);
         cmbCusInService.setModel(new javax.swing.DefaultComboBoxModel<>(array));
-        pnlServices.add(cmbCusInService, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 160, -1));
+        pnlServices.add(cmbCusInService, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 220, -1));
 
         jLabel3.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel3.setText("Zákazník");
-        pnlServices.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, -1, -1));
+        jLabel3.setText("Zákazník - rezervácia");
+        pnlServices.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
         tpnlMain.addTab("Služby", pnlServices);
 
@@ -410,10 +430,50 @@ public class MainWindow extends javax.swing.JFrame {
     
     public void initTableRooms(){
         tblRooms.setModel(initTables(Data.getAllRooms()));
+        
+        List<String> namesRooms = new ArrayList<String>();
+        namesRooms.add("Všetky");
+        for (Room room: Data.getAllRooms()){
+            namesRooms.add(room.getId());
+        }
+
+        String[] arrayRooms = namesRooms.toArray(new String[0]);
+        cmbRooms.setModel(new javax.swing.DefaultComboBoxModel<>(arrayRooms));
+
     }
     
     public void initTableServices(){
         tblServices.setModel(initTables(Data.getAllServices()));
+    }
+    
+    private TableModel initAccomTable(int room, boolean unpaid){
+        List<String> columns = new ArrayList<String>();
+        List<String[]> values = new ArrayList<String[]>();
+
+        for (Reservation res: Data.getAllReservations()){                
+            if ((room == 0 || res.getRoom().equals(Data.getAllRooms().get(room - 1))) && (!unpaid || (res.getPayment() == null && dateNow.after(res.getTo()))) && res.isAccomodation()){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        
+                String fromS = sdf.format(res.getFrom());
+                String toS = sdf.format(res.getTo());
+
+                values.add(new String[] {res.getCustomer().getFirstName() + " " + res.getCustomer().getLastName(), fromS, toS, res.getRoom().getId() + " - " + res.getRoom().getCategory().getName(), String.format("%.2f EUR", res.getPrice())});
+                              
+            }        
+        }
+        columns.add("Celé meno");
+        columns.add("Začiatok");
+        columns.add("Koniec");
+        columns.add("Izba");
+        columns.add("Cena");
+
+        TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
+        return tableModel;
+        
+    }
+    
+    public void initAccomodationTable(int room, boolean unpaid){
+        tblAccoms.setModel(initAccomTable(room, unpaid));
     }
     
     
@@ -457,8 +517,15 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddPaymentMouseReleased
 
     private void btnShowCustomerMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowCustomerMouseReleased
-        CustomerProfile customerProfile = new CustomerProfile();
-        customerProfile.setVisible(true);
+        int cus = tblCustomers.getSelectedRow();
+         
+        if (cus < 0){
+            JOptionPane.showMessageDialog(rootPane, "Vyberte zákayníka, ktorého profil si prajete pozrieť.", "Nevybraný zákazník", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            CustomerProfile customerProfile = new CustomerProfile(Data.getAllCustomers().get(cus));
+            customerProfile.setVisible(true);
+        }
     }//GEN-LAST:event_btnShowCustomerMouseReleased
 
     private void btnAccomInAccomResMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAccomInAccomResMouseReleased
@@ -500,16 +567,16 @@ public class MainWindow extends javax.swing.JFrame {
         int cus = cmbCusInService.getSelectedIndex();
         
         if (ser < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte službu, ktorú si prajete priradiť k zákazníkovi.", "Nevybraná izba", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "Vyberte službu, ktorú si prajete priradiť k zákazníkovi.", "Nevybraná služba", JOptionPane.ERROR_MESSAGE);
         }
         if (cus < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte zákazníka, ktorému chcete priradiť službu.", "Nevybraná izba", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, "Vyberte zákazníka, ktorému chcete priradiť službu.", "Nevybraný zákazník", JOptionPane.ERROR_MESSAGE);
         }
         
         if (cus >= 0 && ser >= 0){
-            CustomerController con = new CustomerController();
+            ReservationController con = new ReservationController();
             System.out.println(dateNow);
-            con.addService(Data.getAllCustomers().get(cus), Data.getAllServices().get(ser), dateNow);
+            con.addService(Data.getAllReservations().get(cus), Data.getAllServices().get(ser), dateNow);
         }        
     }//GEN-LAST:event_btnCus_SerMouseReleased
 
@@ -528,6 +595,51 @@ public class MainWindow extends javax.swing.JFrame {
             showGallery.setVisible(true);
         }
     }//GEN-LAST:event_btnShowGaleryMouseReleased
+
+    private void btnCancelReservationMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelReservationMouseReleased
+        int res = tblReservations.getSelectedRow();
+        
+        if (res < 0){
+            JOptionPane.showMessageDialog(rootPane, "Vyberte rezerváciu, ktorú chcete zrušiť.", "Nevybraná rezervácia", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            Data.getAllReservations().remove(res);
+            initTableReservations();
+        }
+                
+    }//GEN-LAST:event_btnCancelReservationMouseReleased
+
+    private void btnAccomCustomerResMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAccomCustomerResMouseReleased
+        int res = tblReservations.getSelectedRow();
+        
+        List<Reservation> reserv = new ArrayList<Reservation>();
+        
+        for (Reservation reser : Data.getAllReservations()) {
+            if (!reser.isAccomodation())
+                reserv.add(reser);
+        }
+        
+        if (res < 0){
+            JOptionPane.showMessageDialog(rootPane, "Vyberte rezerváciu zákazníka.", "Nevybraná rezervácia", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            reserv.get(res).setAccomodation(true);
+            initTableReservations();
+            initAccomodationTable(0, false);
+        }
+    }//GEN-LAST:event_btnAccomCustomerResMouseReleased
+
+    private void btnFilterMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFilterMouseReleased
+        int room = cmbRooms.getSelectedIndex();
+        boolean unpaid = ckbFinished.isSelected();
+        
+        if (room < 0) {
+            JOptionPane.showMessageDialog(rootPane, "Vyberte izbu alebo všetky izby.", "Nevybraná izba", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            initAccomodationTable(room, unpaid);
+        }
+    }//GEN-LAST:event_btnFilterMouseReleased
     
     public void dateAndTime(int changeDay, int changeMonth, int changeYear, int changeHour, int changeMinute, int changeSecond) {
         new Thread() {
@@ -614,14 +726,15 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelReservation;
     private javax.swing.JButton btnCus_Ser;
     private javax.swing.JButton btnEditRoom;
+    private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnSaveEverything;
     private javax.swing.JButton btnSetTime;
     private javax.swing.JButton btnShowCustomer;
     private javax.swing.JButton btnShowGalery;
     private javax.swing.JCheckBox ckbFinished;
     private javax.swing.JComboBox<String> cmbCusInService;
+    private javax.swing.JComboBox<String> cmbRooms;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

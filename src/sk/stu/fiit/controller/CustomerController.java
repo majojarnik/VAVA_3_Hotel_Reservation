@@ -27,9 +27,4 @@ public class CustomerController {
         Data.getAllCustomers().add(customer);
        
     }
-
-    public void addService(Customer cus, Service ser, Date date) {
-        Service serviceNew = new Service(ser.getName(), ser.getDesc(), ser.getPrice(), date);
-        cus.getServices().add(serviceNew);
-    }
 }

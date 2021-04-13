@@ -6,7 +6,9 @@
 package sk.stu.fiit.gui;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +17,7 @@ import sk.stu.fiit.controller.ReservationController;
 import sk.stu.fiit.data.Data;
 import sk.stu.fiit.exceptions.BadDate;
 import sk.stu.fiit.exceptions.BlankFields;
+import sk.stu.fiit.exceptions.RoomOccupied;
 import sk.stu.fiit.model.Customer;
 import sk.stu.fiit.model.Reservation;
 import sk.stu.fiit.model.Room;
@@ -37,12 +40,13 @@ public class AddReservation extends javax.swing.JFrame {
         lblPrice.setVisible(false);
     }
     
-    public void initEverything(){
-        
-    }
-    
     public void initAccomNoRes(){
         lblHeading.setText("Ubytovanie");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd. MM. yyyy");
+        
+        
+        String dateS = sdf.format(main.getDateNow());
+        ftxfFrom.setText(dateS);
         accom = true;
     }
     
@@ -203,11 +207,14 @@ public class AddReservation extends javax.swing.JFrame {
             try {
                 con.addReservation(ftxfFrom.getText(), ftxfTo.getText(), Data.getAllRooms().get(room), Data.getAllCustomers().get(cus), accom, main.getDateNow());
                 main.initTableReservations();
+                main.initAccomodationTable(0, false);
                 dispose();
             } catch (ParseException ex) {
                 Logger.getLogger(AddReservation.class.getName()).log(Level.SEVERE, null, ex);
             } catch (BadDate ex) {
                 JOptionPane.showMessageDialog(rootPane, "Vyplňte správne dátumy. Nemôžete si rezervovať ubytovanie v minulosti.", "Zlé dátumy", JOptionPane.ERROR_MESSAGE);
+            } catch (RoomOccupied ex) {
+                JOptionPane.showMessageDialog(rootPane, "Izba je v danom období obsadená. Vyberte inú.", "Obsadená izba", JOptionPane.ERROR_MESSAGE);
             }         
         }
     }//GEN-LAST:event_btnSaveMouseReleased

@@ -13,9 +13,12 @@ import java.util.concurrent.TimeUnit;
 import sk.stu.fiit.data.Data;
 import sk.stu.fiit.exceptions.BadDate;
 import sk.stu.fiit.exceptions.BlankFields;
+import sk.stu.fiit.exceptions.RoomOccupied;
 import sk.stu.fiit.model.Customer;
+import sk.stu.fiit.model.Payment;
 import sk.stu.fiit.model.Room;
 import sk.stu.fiit.model.Reservation;
+import sk.stu.fiit.model.Service;
 
 /**
  *
@@ -23,8 +26,8 @@ import sk.stu.fiit.model.Reservation;
  */
 public class ReservationController {
     
-    public void addReservation(String from, String to, Room room, Customer cus, boolean accom, Date currentDate) throws ParseException, BadDate{
-        
+    public void addReservation(String from, String to, Room room, Customer cus, boolean accom, Date currentDate) throws ParseException, BadDate, RoomOccupied{
+       
         double price = countPrice(from, to, room);
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -37,6 +40,11 @@ public class ReservationController {
         
         if (dateD.after(fromD)){
             throw new BadDate();
+        }
+        
+        for (Reservation res : Data.getAllReservations()) {
+            if (res.getRoom().equals(room) && (!res.getFrom().after(toD) && !fromD.after(res.getTo()) || res.getTo().after(fromD) && toD.after(res.getFrom())))
+                throw new RoomOccupied();
         }
          
         Reservation res = new Reservation(fromD, toD, room, price, cus, accom);        
@@ -70,5 +78,17 @@ public class ReservationController {
         double price = daysBetween * room.getCategory().getPrice() * (1 - discount);
         
         return price;
+    }
+    
+    public void addService(Reservation res, Service ser, Date date) {
+        Service serviceNew = new Service(ser.getName(), ser.getDesc(), ser.getPrice(), date);
+        res.getServices().add(serviceNew);
+        res.setPriceAll(res.getPriceAll()+ ser.getPrice());
+    }
+
+ 
+    public void addPayment(Reservation res, Date date, boolean hotovost) {
+        Payment payment = new Payment(hotovost, date);
+        res.setPayment(payment);
     }
 }

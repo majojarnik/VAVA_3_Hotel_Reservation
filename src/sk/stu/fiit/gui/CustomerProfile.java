@@ -5,6 +5,17 @@
  */
 package sk.stu.fiit.gui;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import sk.stu.fiit.data.Data;
+import sk.stu.fiit.model.Customer;
+import sk.stu.fiit.model.Reservation;
+import sk.stu.fiit.model.Service;
+
 /**
  *
  * @author jarni
@@ -14,8 +25,21 @@ public class CustomerProfile extends javax.swing.JFrame {
     /**
      * Creates new form CustomerProfile
      */
-    public CustomerProfile() {
+    Customer cus;
+    List<Reservation> reservs = null;
+    
+    public CustomerProfile(Customer cus) {
+        this.cus = cus;
         initComponents();
+        
+        lblHeading.setText(cus.getFirstName() + " " +  cus.getLastName());
+        
+        for (Reservation res: Data.getAllReservations()){                
+            if (res.getCustomer().equals(cus)){
+                reservs.add(res);
+            }        
+        }
+        
     }
 
     /**
@@ -36,46 +60,50 @@ public class CustomerProfile extends javax.swing.JFrame {
         btnOk = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        btnShowServices = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblReservations.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        List<String> columns = new ArrayList<String>();
+        List<String[]> values = new ArrayList<String[]>();
+
+        for (Reservation res: Data.getAllReservations()){
+            if (res.getCustomer().equals(cus)){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+                String fromS = sdf.format(res.getFrom());
+                String toS = sdf.format(res.getTo());
+                String payS = sdf.format(res.getPayment().getDate());
+
+                values.add(new String[] {fromS, toS, res.getRoom().getId() + " - " + res.getRoom().getCategory().getName(), payS, String.format("%.2f EUR", res.getPriceAll())});
+
             }
-        ));
+        }
+
+        columns.add("Začiatok");
+        columns.add("Koniec");
+        columns.add("Izba");
+        columns.add("Dátum a spôsob platby");
+        columns.add("Celková cena (aj služby)");
+
+        TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
+        tblReservations.setModel(tableModel);
         jScrollPane1.setViewportView(tblReservations);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 420, 100));
 
-        tblServices.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        tblServices.setModel(new DefaultTableModel());
         jScrollPane2.setViewportView(tblServices);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 420, 100));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 420, 100));
 
         lblHeading.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         lblHeading.setText("Meno Priezvisko");
         getContentPane().add(lblHeading, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 20, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel3.setText("Rezervácie");
+        jLabel3.setText("Rezervácie a ubytovania");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
         btnOk.setText("OK");
@@ -89,7 +117,15 @@ public class CustomerProfile extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel5.setText("Využité služby");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, -1, -1));
+
+        btnShowServices.setText("Pozrieť služby k vybranej rezervácii");
+        btnShowServices.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnShowServicesMouseReleased(evt);
+            }
+        });
+        getContentPane().add(btnShowServices, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -98,43 +134,40 @@ public class CustomerProfile extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnOkMouseReleased
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CustomerProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CustomerProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CustomerProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CustomerProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void btnShowServicesMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowServicesMouseReleased
+        int res = tblReservations.getSelectedRow();
+        
+        if (res < 0){
+            JOptionPane.showMessageDialog(rootPane, "Vyberte rezerváciu", "Nevybraná rezervácia", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
+        
+        List<String> columns = new ArrayList<String>();
+        List<String[]> values = new ArrayList<String[]>();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CustomerProfile().setVisible(true);
-            }
-        });
-    }
+        for (Service ser: reservs.get(res).getServices()){                
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+            String dateS = sdf.format(ser.getDate());
+
+            values.add(new String[] {ser.getName(), ser.getDesc(), String.format("%.2f EUR", ser.getPrice()), dateS});
+      
+        }
+
+        columns.add("Názov");
+        columns.add("Opis");
+        columns.add("Cena");
+        columns.add("Dátum");
+
+        TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
+        tblServices.setModel(tableModel);
+
+    }//GEN-LAST:event_btnShowServicesMouseReleased
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOk;
+    private javax.swing.JButton btnShowServices;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

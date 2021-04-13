@@ -5,6 +5,22 @@
  */
 package sk.stu.fiit.gui;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import sk.stu.fiit.controller.ReservationController;
+import sk.stu.fiit.data.Data;
+import sk.stu.fiit.exceptions.BadDate;
+import sk.stu.fiit.exceptions.RoomOccupied;
+import sk.stu.fiit.model.Customer;
+import sk.stu.fiit.model.Reservation;
+
 /**
  *
  * @author jarni
@@ -29,57 +45,57 @@ public class PaymentForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        cmbCustomer = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblIServices = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        cmbCustomer = new javax.swing.JComboBox<>();
-        lblPrice = new javax.swing.JLabel();
         checkCash = new javax.swing.JCheckBox();
         btnPay = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblIServices.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        List<String> names = new ArrayList<String>();
+        for (Customer cus: Data.getAllCustomers()){
+            names.add(cus.getFirstName() + " " +  cus.getLastName());
+        }
+
+        String[] array = names.toArray(new String[0]);
+        cmbCustomer.setModel(new javax.swing.DefaultComboBoxModel<>(array));
+        cmbCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCustomerActionPerformed(evt);
             }
-        ));
+        });
+        getContentPane().add(cmbCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 140, -1));
+
+        tblIServices.setModel(new DefaultTableModel());
         jScrollPane1.setViewportView(tblIServices);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 380, 110));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel1.setText("Služby a rezervácie");
+        jLabel1.setText("Rezervácie");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel2.setText("Platba");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 10, -1, -1));
 
-        cmbCustomer.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cmbCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 140, -1));
-
-        lblPrice.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        lblPrice.setText("XEur");
-        getContentPane().add(lblPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 290, -1, -1));
-
         checkCash.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         checkCash.setText("Hotovostná platba");
         getContentPane().add(checkCash, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, -1, -1));
 
         btnPay.setText("Zaplatiť");
+        btnPay.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnPayMouseReleased(evt);
+            }
+        });
         getContentPane().add(btnPay, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, 110, 40));
 
         btnCancel.setText("Zrušiť");
@@ -93,10 +109,6 @@ public class PaymentForm extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         jLabel4.setText("Zákazník");
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel5.setText("Cena");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 290, -1, -1));
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(351, 336, 50, 50));
 
         pack();
@@ -105,6 +117,57 @@ public class PaymentForm extends javax.swing.JFrame {
     private void btnCancelMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelMouseReleased
         dispose();
     }//GEN-LAST:event_btnCancelMouseReleased
+
+    private void cmbCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCustomerActionPerformed
+        List<String> columns = new ArrayList<String>();
+        List<String[]> values = new ArrayList<String[]>();
+
+        for (Reservation res: Data.getAllReservations()){
+            if (res.getCustomer().equals(Data.getAllCustomers().get(cmbCustomer.getSelectedIndex())) && res.getPayment() == null && res.isAccomodation()){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+                String fromS = sdf.format(res.getFrom());
+                String toS = sdf.format(res.getTo());
+
+                values.add(new String[] {fromS, toS, res.getRoom().getId() + " - " + res.getRoom().getCategory().getName(), String.format("%.2f EUR", res.getPriceAll())});
+
+            }
+        }
+
+        columns.add("Začiatok");
+        columns.add("Koniec");
+        columns.add("Izba");
+        columns.add("Celková cena (aj služby)");
+
+        TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
+        tblIServices.setModel(tableModel);
+    }//GEN-LAST:event_cmbCustomerActionPerformed
+
+    private void btnPayMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPayMouseReleased
+        ReservationController con = new ReservationController();
+        
+        List<Reservation> moment = new ArrayList<Reservation>();
+        
+        int reser = tblIServices.getSelectedRow();
+        
+        for (Reservation res: Data.getAllReservations()){
+            if (res.getCustomer().equals(Data.getAllCustomers().get(cmbCustomer.getSelectedIndex())) && res.getPayment() == null && res.isAccomodation()){
+                moment.add(res);
+            }
+        }
+        
+        if (reser < 0){
+            JOptionPane.showMessageDialog(rootPane, "Vyberte rezervaciu.", "Nevyplnené údaje", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+            con.addPayment(moment.get(reser), main.getDateNow(), checkCash.isSelected());
+            main.initAccomodationTable(0, false);
+            dispose();
+                   
+        }
+        
+        
+    }//GEN-LAST:event_btnPayMouseReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -115,10 +178,8 @@ public class PaymentForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lblPrice;
     private javax.swing.JTable tblIServices;
     // End of variables declaration//GEN-END:variables
 }
