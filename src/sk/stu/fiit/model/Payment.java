@@ -5,10 +5,46 @@
  */
 package sk.stu.fiit.model;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  *
  * @author jarni
  */
-public class Payment {
+public class Payment{
+    private boolean cash;
+    private Date date;
+    private List<IService> listServices;
+
+    public Payment(boolean cash, Date date, List<IService> listServices) {
+        this.cash = cash;
+        this.date = date;
+        this.listServices = listServices;
+    }
+
+    public boolean isCash() {
+        return cash;
+    }
+
+    public void setCash(boolean cash) {
+        this.cash = cash;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public List<IService> getListServices() {
+        return listServices;
+    }
+
+    public void setListServices(List<IService> listServices) {
+        this.listServices = listServices;
+    }
     
 }

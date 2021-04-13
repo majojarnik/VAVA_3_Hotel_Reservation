@@ -5,11 +5,14 @@
  */
 package sk.stu.fiit.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author jarni
  */
-public class Category {
+public class Category{
     private String name;
     private String desc;
     private double price;
@@ -43,6 +46,30 @@ public class Category {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+
+    /*@Override
+    public String[] rowsTable(){
+        String aud;
+        if (NBU)
+            aud = "áno";
+        else
+            aud = "nie";
+        
+        return new String[] {name, String.valueOf(manDay), String.valueOf(experience), education.toString(), aud};
+    }
+    
+    @Override
+    public List<String> columnsTable(){
+        List<String> columns = new ArrayList<String>();
+        
+        columns.add("Meno");
+        columns.add("Cena za deň");
+        columns.add("Dĺžka praxe");
+        columns.add("Vzdelanie");
+        columns.add("Auditor NBU?");
+
+        return columns;
+    }*/
     
     
     
