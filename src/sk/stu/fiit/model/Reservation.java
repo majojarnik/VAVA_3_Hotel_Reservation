@@ -5,6 +5,7 @@
  */
 package sk.stu.fiit.model;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.List;
  *
  * @author jarni
  */
-public class Reservation implements ITableModel{
+public class Reservation implements ITableModel,Serializable{
     
     private Date from;
     private Date to;

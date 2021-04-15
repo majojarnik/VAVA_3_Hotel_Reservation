@@ -5,6 +5,7 @@
  */
 package sk.stu.fiit.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author jarni
  */
-public class Customer implements ITableModel{
+public class Customer implements ITableModel, Serializable{
     private String firstName;
     private String lastName;
     private List<Reservation> reservations = new ArrayList<Reservation>();

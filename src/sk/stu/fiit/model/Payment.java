@@ -5,13 +5,14 @@
  */
 package sk.stu.fiit.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  *
  * @author jarni
  */
-public class Payment{
+public class Payment  implements Serializable{
     private boolean cash;
     private Date date;
 

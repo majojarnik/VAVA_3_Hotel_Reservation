@@ -140,27 +140,28 @@ public class CustomerProfile extends javax.swing.JFrame {
         if (res < 0){
             JOptionPane.showMessageDialog(rootPane, "Vyberte rezerváciu", "Nevybraná rezervácia", JOptionPane.ERROR_MESSAGE);
         }
-        
-        List<String> columns = new ArrayList<String>();
-        List<String[]> values = new ArrayList<String[]>();
+        else{
+            List<String> columns = new ArrayList<String>();
+            List<String[]> values = new ArrayList<String[]>();
 
-        for (Service ser: reservs.get(res).getServices()){                
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+            for (Service ser: reservs.get(res).getServices()){                
 
-            String dateS = sdf.format(ser.getDate());
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
 
-            values.add(new String[] {ser.getName(), ser.getDesc(), String.format("%.2f EUR", ser.getPrice()), dateS});
-      
+                String dateS = sdf.format(ser.getDate());
+
+                values.add(new String[] {ser.getName(), ser.getDesc(), String.format("%.2f EUR", ser.getPrice()), dateS});
+
+            }
+
+            columns.add("Názov");
+            columns.add("Opis");
+            columns.add("Cena");
+            columns.add("Dátum");
+
+            TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
+            tblServices.setModel(tableModel);
         }
-
-        columns.add("Názov");
-        columns.add("Opis");
-        columns.add("Cena");
-        columns.add("Dátum");
-
-        TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
-        tblServices.setModel(tableModel);
 
     }//GEN-LAST:event_btnShowServicesMouseReleased
 

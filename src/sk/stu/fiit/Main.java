@@ -21,8 +21,8 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception{
-        Data.getAllCategories().add(new Category("premium", "premiova izba", 35.65));
+    public static void main(String[] args) throws Exception{        
+        Data.loadEverything();
         
         MainWindow main = new MainWindow();
         main.setVisible(true);

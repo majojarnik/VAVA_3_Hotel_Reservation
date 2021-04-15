@@ -6,6 +6,7 @@
 package sk.stu.fiit.model;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,11 @@ import java.util.List;
  *
  * @author jarni
  */
-public class Room implements ITableModel{
+public class Room implements ITableModel, Serializable{
     private String id;
     private Category category;
     private String note;
-    private List<BufferedImage> images;
+    private transient List<BufferedImage> images;
 
     public Room(String id, Category category, String note, List<BufferedImage> images) {
         this.id = id;

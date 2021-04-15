@@ -5,6 +5,12 @@
  */
 package sk.stu.fiit.data;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import sk.stu.fiit.model.Category;
@@ -74,6 +80,123 @@ public class Data {
         allServices = aAllServices;
     }
     
+    
+    public static void saveToFile(String fileName, List<? extends Serializable> list){
+        try
+        {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(list);
+            oos.close();
+            fos.close();
+        } 
+        catch (IOException ioe) 
+        {
+            ioe.printStackTrace();
+        }
+        
+    }
+     
+   /* public static List<? extends Serializable> reloadFromFile(String fileName, List<? extends Serializable> list){
+        try
+        {
+            FileInputStream fis = new FileInputStream(fileName);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+ 
+            list = (ArrayList) ois.readObject();
+ 
+            ois.close();
+            fis.close();
+            return list;
+        } 
+        catch (IOException ioe) 
+        {
+            ioe.printStackTrace();
+            return null;
+        } 
+        catch (ClassNotFoundException c) 
+        {
+            System.out.println("Class not found");
+            c.printStackTrace();
+            return null;
+        }
+    
+    }*/
+    
+    public static void saveEverythingToFile(){
+        saveToFile("customersData", allCustomers);
+        saveToFile("roomsData", allRooms);
+        saveToFile("categoriesData", allCategories);
+        saveToFile("paymentsData", allPayments);
+        saveToFile("reservationsData", allReservations);
+        saveToFile("servicesData", allServices);
+    }
+    
+    public static void loadEverything(){
+        try
+        {
+            FileInputStream fisCus = new FileInputStream("customersData");
+            ObjectInputStream oisCus = new ObjectInputStream(fisCus);
+ 
+            allCustomers = (ArrayList) oisCus.readObject();
+ 
+            oisCus.close();
+            fisCus.close();
+            
+            FileInputStream fisRoom = new FileInputStream("roomsData");
+            ObjectInputStream oisRoom = new ObjectInputStream(fisRoom);
+ 
+            allRooms = (ArrayList) oisRoom.readObject();
+ 
+            oisRoom.close();
+            fisRoom.close();
+            
+            FileInputStream fisRes = new FileInputStream("reservationsData");
+            ObjectInputStream oisRes = new ObjectInputStream(fisRes);
+ 
+            allReservations = (ArrayList) oisRes.readObject();
+ 
+            oisRes.close();
+            fisRes.close();
+            
+            FileInputStream fisCat = new FileInputStream("categoriesData");
+            ObjectInputStream oisCat = new ObjectInputStream(fisCat);
+ 
+            allCategories = (ArrayList) oisCat.readObject();
+ 
+            oisCat.close();
+            fisCat.close();
+            
+            FileInputStream fisSer = new FileInputStream("servicesData");
+            ObjectInputStream oisSer = new ObjectInputStream(fisSer);
+ 
+            allServices = (ArrayList) oisSer.readObject();
+ 
+            oisSer.close();
+            fisSer.close();
+            
+            FileInputStream fisPay = new FileInputStream("paymentsData");
+            ObjectInputStream oisPay = new ObjectInputStream(fisPay);
+ 
+            allPayments = (ArrayList) oisPay.readObject();
+ 
+            oisPay.close();
+            fisPay.close();
+                       
+        } 
+        catch (IOException ioe) 
+        {
+            ioe.printStackTrace();
+            return;
+        } 
+        catch (ClassNotFoundException c) 
+        {
+            System.out.println("Class not found");
+            c.printStackTrace();
+            return;
+        }
+        
+    }
     
     
 }

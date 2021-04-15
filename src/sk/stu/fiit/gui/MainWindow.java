@@ -124,7 +124,7 @@ public class MainWindow extends javax.swing.JFrame {
         lblDate = new javax.swing.JLabel();
         lblTime = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        btnSaveEverything2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -387,8 +387,13 @@ public class MainWindow extends javax.swing.JFrame {
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 18, 460, 10));
 
-        jButton1.setText("Uložiť");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 0, 70, 20));
+        btnSaveEverything2.setText("Uložiť");
+        btnSaveEverything2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnSaveEverything2MouseReleased(evt);
+            }
+        });
+        getContentPane().add(btnSaveEverything2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 0, 70, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -581,7 +586,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCus_SerMouseReleased
 
     private void btnSaveEverythingMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEverythingMouseReleased
-        // TODO add your handling code here:
+        Data.saveEverythingToFile();
     }//GEN-LAST:event_btnSaveEverythingMouseReleased
 
     private void btnShowGaleryMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnShowGaleryMouseReleased
@@ -640,6 +645,10 @@ public class MainWindow extends javax.swing.JFrame {
             initAccomodationTable(room, unpaid);
         }
     }//GEN-LAST:event_btnFilterMouseReleased
+
+    private void btnSaveEverything2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEverything2MouseReleased
+        Data.saveEverythingToFile();
+    }//GEN-LAST:event_btnSaveEverything2MouseReleased
     
     public void dateAndTime(int changeDay, int changeMonth, int changeYear, int changeHour, int changeMinute, int changeSecond) {
         new Thread() {
@@ -728,13 +737,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnEditRoom;
     private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnSaveEverything;
+    private javax.swing.JButton btnSaveEverything2;
     private javax.swing.JButton btnSetTime;
     private javax.swing.JButton btnShowCustomer;
     private javax.swing.JButton btnShowGalery;
     private javax.swing.JCheckBox ckbFinished;
     private javax.swing.JComboBox<String> cmbCusInService;
     private javax.swing.JComboBox<String> cmbRooms;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

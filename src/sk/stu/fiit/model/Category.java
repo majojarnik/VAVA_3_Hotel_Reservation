@@ -5,6 +5,7 @@
  */
 package sk.stu.fiit.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author jarni
  */
-public class Category{
+public class Category implements Serializable{
     private String name;
     private String desc;
     private double price;

@@ -5,6 +5,7 @@
  */
 package sk.stu.fiit.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author jarni
  */
-public class Service implements ITableModel{
+public class Service implements ITableModel, Serializable{
     private String name;
     private String desc;
     private double price;
