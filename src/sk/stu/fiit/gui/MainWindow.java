@@ -5,13 +5,18 @@
  */
 package sk.stu.fiit.gui;
 
+import java.awt.Button;
+import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -31,6 +36,9 @@ import sk.stu.fiit.model.Room;
 public class MainWindow extends javax.swing.JFrame {
 
     private static boolean exit = false; 
+    private static ResourceBundle bundle = ResourceBundle.getBundle("sk/stu/fiit/Bundle_en_US");
+    
+    
     
     String timeString;
     String dateString;
@@ -78,6 +86,7 @@ public class MainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel5 = new javax.swing.JLabel();
         tpnlMain = new javax.swing.JTabbedPane();
         pnlMain = new javax.swing.JPanel();
         btnSetTime = new javax.swing.JButton();
@@ -85,6 +94,7 @@ public class MainWindow extends javax.swing.JFrame {
         btnAddPayment = new javax.swing.JButton();
         btnAccomRes = new javax.swing.JButton();
         btnSaveEverything = new javax.swing.JButton();
+        btnSwitchLan = new javax.swing.JToggleButton();
         pnlReservations = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblReservations = new javax.swing.JTable();
@@ -126,52 +136,65 @@ public class MainWindow extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         btnSaveEverything2 = new javax.swing.JButton();
 
+        jLabel5.setText("jLabel5");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(460, 300));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        pnlMain.setMinimumSize(new java.awt.Dimension(456, 300));
+        pnlMain.setPreferredSize(new java.awt.Dimension(456, 300));
         pnlMain.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnSetTime.setText("Nastav deň a čas");
+        btnSetTime.setText(bundle.getString("NASTAV DEŇ A ČAS")); // NOI18N
         btnSetTime.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnSetTimeMouseReleased(evt);
             }
         });
-        pnlMain.add(btnSetTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 160, 170, 40));
+        pnlMain.add(btnSetTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 170, 40));
 
-        btnAccomNoRes.setText("Ubytovanie bez rezervácie");
+        btnAccomNoRes.setText(bundle.getString("UBYTOVANIE BEZ REZERVÁCIE")); // NOI18N
         btnAccomNoRes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAccomNoResMouseReleased(evt);
             }
         });
-        pnlMain.add(btnAccomNoRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 170, 40));
+        pnlMain.add(btnAccomNoRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, 170, 40));
 
-        btnAddPayment.setText("Platba zákazníka");
+        btnAddPayment.setText(bundle.getString("PLATBA ZÁKAZNÍKA")); // NOI18N
         btnAddPayment.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAddPaymentMouseReleased(evt);
             }
         });
-        pnlMain.add(btnAddPayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 170, 40));
+        pnlMain.add(btnAddPayment, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 170, 40));
 
-        btnAccomRes.setText("Ubytovanie s rezerváciou");
+        btnAccomRes.setText(bundle.getString("UBYTOVANIE S REZERVÁCIOU")); // NOI18N
         btnAccomRes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAccomResMouseReleased(evt);
             }
         });
-        pnlMain.add(btnAccomRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 170, 40));
+        pnlMain.add(btnAccomRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 170, 40));
 
-        btnSaveEverything.setText("Uložiť všetky zmeny");
+        btnSaveEverything.setText(bundle.getString("ULOŽIŤ VŠETKY ZMENY")); // NOI18N
         btnSaveEverything.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnSaveEverythingMouseReleased(evt);
             }
         });
-        pnlMain.add(btnSaveEverything, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 210, 170, 40));
+        pnlMain.add(btnSaveEverything, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 140, 170, 40));
 
-        tpnlMain.addTab("Menu", pnlMain);
+        btnSwitchLan.setText(bundle.getString("SWITCH TO ENGLISH")); // NOI18N
+        btnSwitchLan.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnSwitchLanMouseReleased(evt);
+            }
+        });
+        pnlMain.add(btnSwitchLan, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 200, -1, -1));
+
+        tpnlMain.addTab(bundle.getString("MENU"), pnlMain); // NOI18N
 
         pnlReservations.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -179,9 +202,9 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jScrollPane2.setViewportView(tblReservations);
 
-        pnlReservations.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 170));
+        pnlReservations.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 170));
 
-        btnAddRes.setText("Vytvoriť rezerváciu");
+        btnAddRes.setText(bundle.getString("VYTVORIŤ REZERVÁCIU")); // NOI18N
         btnAddRes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAddResMouseReleased(evt);
@@ -189,7 +212,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlReservations.add(btnAddRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, -1, -1));
 
-        btnCancelReservation.setText("Zrušiť rezerváciu");
+        btnCancelReservation.setText(bundle.getString("ZRUŠIŤ REZERVÁCIU")); // NOI18N
         btnCancelReservation.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnCancelReservationMouseReleased(evt);
@@ -197,7 +220,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlReservations.add(btnCancelReservation, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 220, -1, -1));
 
-        btnAccomCustomerRes.setText("Ubytovať zákazníka");
+        btnAccomCustomerRes.setText(bundle.getString("UBYTOVAŤ ZÁKAZNÍKA")); // NOI18N
         btnAccomCustomerRes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAccomCustomerResMouseReleased(evt);
@@ -205,7 +228,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlReservations.add(btnAccomCustomerRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 220, -1, -1));
 
-        tpnlMain.addTab("Rezervácie", pnlReservations);
+        tpnlMain.addTab(bundle.getString("REZERVÁCIE"), pnlReservations); // NOI18N
 
         pnlAccom.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -215,11 +238,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         pnlAccom.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 460, 100));
 
-        ckbFinished.setText("Len ukončené a nezaplatené");
+        ckbFinished.setText(bundle.getString("LEN UKONČENÉ A NEZAPLATENÉ")); // NOI18N
         pnlAccom.add(ckbFinished, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel4.setText("Izba:");
+        jLabel4.setText(bundle.getString("IZBA:")); // NOI18N
         pnlAccom.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 30));
 
         List<String> namesRooms = new ArrayList<String>();
@@ -232,7 +255,7 @@ public class MainWindow extends javax.swing.JFrame {
         cmbRooms.setModel(new javax.swing.DefaultComboBoxModel<>(arrayRooms));
         pnlAccom.add(cmbRooms, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 100, 30));
 
-        btnAccomInAccomRes.setText("Ubytovať s rezerváciou");
+        btnAccomInAccomRes.setText(bundle.getString("UBYTOVAŤ S REZERVÁCIOU")); // NOI18N
         btnAccomInAccomRes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAccomInAccomResMouseReleased(evt);
@@ -240,7 +263,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlAccom.add(btnAccomInAccomRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, -1, -1));
 
-        btnAccomInAccomNoRes.setText("Ubytovať bez rezervácie");
+        btnAccomInAccomNoRes.setText(bundle.getString("UBYTOVAŤ BEZ REZERVÁCIE")); // NOI18N
         btnAccomInAccomNoRes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAccomInAccomNoResMouseReleased(evt);
@@ -248,7 +271,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlAccom.add(btnAccomInAccomNoRes, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 220, -1, -1));
 
-        btnFilter.setText("Filtrovať");
+        btnFilter.setText(bundle.getString("FILTROVAŤ")); // NOI18N
         btnFilter.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnFilterMouseReleased(evt);
@@ -256,7 +279,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlAccom.add(btnFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, -1, -1));
 
-        tpnlMain.addTab("Ubytovania", pnlAccom);
+        tpnlMain.addTab(bundle.getString("UBYTOVANIA"), pnlAccom); // NOI18N
 
         pnlRooms.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -266,7 +289,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         pnlRooms.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 210));
 
-        btnAddRoom.setText("Pridať izbu");
+        btnAddRoom.setText(bundle.getString("PRIDAŤ IZBU")); // NOI18N
         btnAddRoom.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAddRoomMouseReleased(evt);
@@ -274,7 +297,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlRooms.add(btnAddRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, -1, -1));
 
-        btnEditRoom.setText("Editovať izbu");
+        btnEditRoom.setText(bundle.getString("EDITOVAŤ IZBU")); // NOI18N
         btnEditRoom.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnEditRoomMouseReleased(evt);
@@ -282,7 +305,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlRooms.add(btnEditRoom, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, -1, -1));
 
-        btnShowGalery.setText("Pozrieť galériu");
+        btnShowGalery.setText(bundle.getString("POZRIEŤ GALÉRIU")); // NOI18N
         btnShowGalery.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnShowGaleryMouseReleased(evt);
@@ -290,7 +313,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlRooms.add(btnShowGalery, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, -1, -1));
 
-        btnAddCategory.setText("Pridať kategóriu izieb");
+        btnAddCategory.setText(bundle.getString("PRIDAŤ KATEGÓRIU IZIEB")); // NOI18N
         btnAddCategory.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAddCategoryMouseReleased(evt);
@@ -298,7 +321,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlRooms.add(btnAddCategory, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 220, -1, -1));
 
-        tpnlMain.addTab("Izby", pnlRooms);
+        tpnlMain.addTab(bundle.getString("IZBY"), pnlRooms); // NOI18N
 
         pnlServices.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -306,9 +329,9 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jScrollPane4.setViewportView(tblServices);
 
-        pnlServices.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 150));
+        pnlServices.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 150));
 
-        btnAddService.setText("Vytvoriť novú službu");
+        btnAddService.setText(bundle.getString("VYTVORIŤ NOVÚ SLUŽBU")); // NOI18N
         btnAddService.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAddServiceMouseReleased(evt);
@@ -316,7 +339,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         pnlServices.add(btnAddService, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 210, -1, -1));
 
-        btnCus_Ser.setText("Pridať službu k zákazníkovi");
+        btnCus_Ser.setText(bundle.getString("PRIDAŤ SLUŽBU K ZÁKAZNÍKOVI")); // NOI18N
         btnCus_Ser.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnCus_SerMouseReleased(evt);
@@ -335,10 +358,10 @@ public class MainWindow extends javax.swing.JFrame {
         pnlServices.add(cmbCusInService, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 220, -1));
 
         jLabel3.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel3.setText("Zákazník - rezervácia");
+        jLabel3.setText(bundle.getString("ZÁKAZNÍK - REZERVÁCIA")); // NOI18N
         pnlServices.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, -1, -1));
 
-        tpnlMain.addTab("Služby", pnlServices);
+        tpnlMain.addTab(bundle.getString("SLUŽBY"), pnlServices); // NOI18N
 
         pnlCustomers.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -346,39 +369,39 @@ public class MainWindow extends javax.swing.JFrame {
         );
         jScrollPane1.setViewportView(tblCustomers);
 
-        pnlCustomers.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 140));
+        pnlCustomers.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 170));
 
-        btnAddCustomer.setText("Pridať zákazníka");
+        btnAddCustomer.setText(bundle.getString("PRIDAŤ ZÁKAZNÍKA")); // NOI18N
         btnAddCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnAddCustomerMouseReleased(evt);
             }
         });
-        pnlCustomers.add(btnAddCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+        pnlCustomers.add(btnAddCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, -1, -1));
 
-        btnShowCustomer.setText("Profil zákazníka");
+        btnShowCustomer.setText(bundle.getString("PROFIL ZÁKAZNÍKA")); // NOI18N
         btnShowCustomer.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnShowCustomerMouseReleased(evt);
             }
         });
-        pnlCustomers.add(btnShowCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 210, -1, -1));
+        pnlCustomers.add(btnShowCustomer, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 210, -1, -1));
 
-        tpnlMain.addTab("Zákazníci", pnlCustomers);
+        tpnlMain.addTab(bundle.getString("ZÁKAZNÍCI"), pnlCustomers); // NOI18N
 
         getContentPane().add(tpnlMain, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 460, 280));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel1.setText("Dátum:");
+        jLabel1.setText(bundle.getString("DÁTUM:")); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
-        jLabel2.setText("Čas:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, -1, -1));
+        jLabel2.setText(bundle.getString("ČAS:")); // NOI18N
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 0, -1, -1));
 
         lblDate.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         lblDate.setText("date");
-        getContentPane().add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, -1, -1));
+        getContentPane().add(lblDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, -1, -1));
 
         lblTime.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         lblTime.setText("time");
@@ -387,7 +410,7 @@ public class MainWindow extends javax.swing.JFrame {
         jSeparator1.setBackground(new java.awt.Color(0, 0, 0));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 18, 460, 10));
 
-        btnSaveEverything2.setText("Uložiť");
+        btnSaveEverything2.setText(bundle.getString("ULOŽIŤ")); // NOI18N
         btnSaveEverything2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btnSaveEverything2MouseReleased(evt);
@@ -437,7 +460,7 @@ public class MainWindow extends javax.swing.JFrame {
         tblRooms.setModel(initTables(Data.getAllRooms()));
         
         List<String> namesRooms = new ArrayList<String>();
-        namesRooms.add("Všetky");
+        namesRooms.add(bundle.getString("VŠETKY"));
         for (Room room: Data.getAllRooms()){
             namesRooms.add(room.getId());
         }
@@ -466,11 +489,11 @@ public class MainWindow extends javax.swing.JFrame {
                               
             }        
         }
-        columns.add("Celé meno");
-        columns.add("Začiatok");
-        columns.add("Koniec");
-        columns.add("Izba");
-        columns.add("Cena");
+        columns.add(bundle.getString("CELÉ MENO"));
+        columns.add(bundle.getString("ZAČIATOK"));
+        columns.add(bundle.getString("KONIEC"));
+        columns.add(bundle.getString("IZBA"));
+        columns.add(bundle.getString("CENA"));
 
         TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
         return tableModel;
@@ -525,7 +548,7 @@ public class MainWindow extends javax.swing.JFrame {
         int cus = tblCustomers.getSelectedRow();
          
         if (cus < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte zákayníka, ktorého profil si prajete pozrieť.", "Nevybraný zákazník", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE ZÁKAYNÍKA, KTORÉHO PROFIL SI PRAJETE POZRIEŤ."), bundle.getString("NEVYBRANÝ ZÁKAZNÍK"), JOptionPane.ERROR_MESSAGE);
         }
         else{
             CustomerProfile customerProfile = new CustomerProfile(Data.getAllCustomers().get(cus));
@@ -548,7 +571,7 @@ public class MainWindow extends javax.swing.JFrame {
         //Room room = new Room("nieco", new Category("nieco", "niec", 12.5));
         
         if (room < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte izbu, ktorú si prajete editovať.", "Nevybraná izba", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE IZBU, KTORÚ SI PRAJETE EDITOVAŤ."), bundle.getString("NEVYBRANÁ IZBA"), JOptionPane.ERROR_MESSAGE);
         }
         else{
             AddRoom addRoom = new AddRoom(this);
@@ -572,10 +595,10 @@ public class MainWindow extends javax.swing.JFrame {
         int cus = cmbCusInService.getSelectedIndex();
         
         if (ser < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte službu, ktorú si prajete priradiť k zákazníkovi.", "Nevybraná služba", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE SLUŽBU, KTORÚ SI PRAJETE PRIRADIŤ K ZÁKAZNÍKOVI."), bundle.getString("NEVYBRANÁ SLUŽBA"), JOptionPane.ERROR_MESSAGE);
         }
         if (cus < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte zákazníka, ktorému chcete priradiť službu.", "Nevybraný zákazník", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE ZÁKAZNÍKA, KTORÉMU CHCETE PRIRADIŤ SLUŽBU."), bundle.getString("NEVYBRANÝ ZÁKAZNÍK"), JOptionPane.ERROR_MESSAGE);
         }
         
         if (cus >= 0 && ser >= 0){
@@ -593,7 +616,7 @@ public class MainWindow extends javax.swing.JFrame {
         int room = tblRooms.getSelectedRow();
         
         if (room < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte izbu, ktorú si prajete editovať.", "Nevybraná izba", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE IZBU, KTORÚ SI PRAJETE EDITOVAŤ."), bundle.getString("NEVYBRANÁ IZBA"), JOptionPane.ERROR_MESSAGE);
         }
         else{
             ShowGallery showGallery = new ShowGallery(Data.getAllRooms().get(room));
@@ -605,7 +628,7 @@ public class MainWindow extends javax.swing.JFrame {
         int res = tblReservations.getSelectedRow();
         
         if (res < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte rezerváciu, ktorú chcete zrušiť.", "Nevybraná rezervácia", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE REZERVÁCIU, KTORÚ CHCETE ZRUŠIŤ."), bundle.getString("NEVYBRANÁ REZERVÁCIA"), JOptionPane.ERROR_MESSAGE);
         }
         else{
             Data.getAllReservations().remove(res);
@@ -625,7 +648,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
         
         if (res < 0){
-            JOptionPane.showMessageDialog(rootPane, "Vyberte rezerváciu zákazníka.", "Nevybraná rezervácia", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE REZERVÁCIU ZÁKAZNÍKA."), bundle.getString("NEVYBRANÁ REZERVÁCIA"), JOptionPane.ERROR_MESSAGE);
         }
         else{
             reserv.get(res).setAccomodation(true);
@@ -639,7 +662,7 @@ public class MainWindow extends javax.swing.JFrame {
         boolean unpaid = ckbFinished.isSelected();
         
         if (room < 0) {
-            JOptionPane.showMessageDialog(rootPane, "Vyberte izbu alebo všetky izby.", "Nevybraná izba", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(rootPane, bundle.getString("VYBERTE IZBU ALEBO VŠETKY IZBY."), bundle.getString("NEVYBRANÁ IZBA"), JOptionPane.ERROR_MESSAGE);
         }
         else{
             initAccomodationTable(room, unpaid);
@@ -649,6 +672,46 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnSaveEverything2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSaveEverything2MouseReleased
         Data.saveEverythingToFile();
     }//GEN-LAST:event_btnSaveEverything2MouseReleased
+
+    private void btnSwitchLanMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSwitchLanMouseReleased
+        if (btnSwitchLan.isSelected()){
+            bundle = ResourceBundle.getBundle("sk/stu/fiit/Bundle");
+        }
+        else{
+            bundle = ResourceBundle.getBundle("sk/stu/fiit/Bundle_en_US");
+        }        
+        
+        btnSetTime.setText(bundle.getString("NASTAV DEŇ A ČAS")); 
+        btnAccomNoRes.setText(bundle.getString("UBYTOVANIE BEZ REZERVÁCIE"));
+        btnAddPayment.setText(bundle.getString("PLATBA ZÁKAZNÍKA"));
+        btnAccomRes.setText(bundle.getString("UBYTOVANIE S REZERVÁCIOU"));
+        btnSaveEverything.setText(bundle.getString("ULOŽIŤ"));
+        btnSwitchLan.setText(bundle.getString("SWITCH TO ENGLISH"));
+        btnAddRes.setText(bundle.getString("VYTVORIŤ REZERVÁCIU"));
+        btnCancelReservation.setText(bundle.getString("ZRUŠIŤ REZERVÁCIU"));
+        btnAccomCustomerRes.setText(bundle.getString("UBYTOVAŤ S REZERVÁCIOU"));
+        jLabel4.setText(bundle.getString("IZBA"));
+        btnAccomInAccomRes.setText(bundle.getString("UBYTOVAŤ S REZERVÁCIOU"));
+        btnAccomInAccomNoRes.setText(bundle.getString("UBYTOVANIE BEZ REZERVÁCIE"));
+        btnFilter.setText(bundle.getString("FILTROVAŤ"));
+        btnAddRoom.setText(bundle.getString("PRIDAŤ IZBU"));
+        btnEditRoom.setText(bundle.getString("EDITOVAŤ IZBU"));
+        btnShowGalery.setText(bundle.getString("POZRIEŤ GALÉRIU"));
+        
+        ckbFinished.setText(bundle.getString("LEN UKONČENÉ A NEZAPLATENÉ"));
+        
+        btnAddCategory.setText(bundle.getString("PRIDAŤ KATEGÓRIU IZIEB"));
+        btnAddService.setText(bundle.getString("VYTVORIŤ NOVÚ SLUŽBU"));
+        btnCus_Ser.setText(bundle.getString("PRIDAŤ SLUŽBU K ZÁKAZNÍKOVI"));
+        jLabel3.setText(bundle.getString("ZÁKAZNÍK - REZERVÁCIA"));
+        btnAddCustomer.setText(bundle.getString("PRIDAŤ ZÁKAZNÍKA"));
+        btnShowCustomer.setText(bundle.getString("PROFIL ZÁKAZNÍKA"));
+        jLabel1.setText(bundle.getString("DÁTUM:"));
+        jLabel2.setText(bundle.getString("ČAS:"));
+        btnSaveEverything2.setText(bundle.getString("ULOŽIŤ"));
+        
+        
+    }//GEN-LAST:event_btnSwitchLanMouseReleased
     
     public void dateAndTime(int changeDay, int changeMonth, int changeYear, int changeHour, int changeMinute, int changeSecond) {
         new Thread() {
@@ -741,6 +804,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton btnSetTime;
     private javax.swing.JButton btnShowCustomer;
     private javax.swing.JButton btnShowGalery;
+    private javax.swing.JToggleButton btnSwitchLan;
     private javax.swing.JCheckBox ckbFinished;
     private javax.swing.JComboBox<String> cmbCusInService;
     private javax.swing.JComboBox<String> cmbRooms;
@@ -748,6 +812,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
